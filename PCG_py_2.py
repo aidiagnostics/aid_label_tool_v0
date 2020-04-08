@@ -1,11 +1,11 @@
 """
-Time-Series Labeling Tool
+Audio Labeling Tool
 -------------------------
 
-@author: Kevin Machado Gamboa
-Created on Wed Apr  4 10:46:31 2018
-References:
-https://github.com/drammock/spectrogram-tutorial/blob/master/spectrogram.ipynb
+AI Diagostics Ltd
+@author: Kevin Machado
+
+Created on Wed Apr  8 17:29:31 2020
 """
 import sys
 import numpy as np 
@@ -18,7 +18,7 @@ from PyQt5.uic import loadUi
 from PyQt5.QtWidgets import QApplication, QMainWindow
 from PyQt5 import QtWidgets, QtGui
 # Own Lobrary
-import ppfunctions_1 as ppf
+import aidiagnostics_toolbox as aidt
 
 class mainWindow(QMainWindow):
     def __init__(self):
@@ -50,11 +50,11 @@ class mainWindow(QMainWindow):
         self.duration = np.size(self.data) * (1/self.fs)
         self.vectortime = np.linspace(0, self.duration, np.size(self.data))
 
-        self.data_P1 = ppf.vec_nor(self.data)
+        self.data_P1 = aidt.vec_nor(self.data)
         self.vlabel = np.zeros(len(self.data_P1))
         
-        Xf1 = 1+ppf.butter_bp_fil(self.data_P1, 40, 70, self.fs)
-        Xf2 = 2+ppf.butter_bp_fil(self.data_P1, 70, 100, self.fs)
+        Xf1 = 1+aidt.butter_bp_fil(self.data_P1, 40, 70, self.fs)
+        Xf2 = 2+aidt.butter_bp_fil(self.data_P1, 70, 100, self.fs)
         # Updating Plots
         self._plt1.clear()
         self._plt1.plot(x=list(self.vectortime), y=list(self.data_P1), pen=self.plot_colors[0])
