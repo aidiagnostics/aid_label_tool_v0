@@ -11,6 +11,7 @@ import sys
 import numpy as np 
 import pandas as pd
 import pyqtgraph as pg
+import soundfile as sf
 import sounddevice as sd
 import scipy.io.wavfile as wf
 # GUI libraries
@@ -64,9 +65,6 @@ class mainWindow(QMainWindow):
         self._plt2.plot(x=list(self.vectortime), y=list(self.data_P1), pen=self.plot_colors[0])
         self._plt2.plot(x=list(self.vectortime), y=list(Xf1), pen=self.plot_colors[1])
         self._plt2.plot(x=list(self.vectortime), y=list(Xf2), pen=self.plot_colors[2])
-        
-#        self._plt3.clear()
-#        self._plt3.plot(x=list(self.vectortime), y=list(self.vlabel), pen=self.plot_colors[0])
         # Add the LinearRegionItem to the ViewBox, but tell the ViewBox to exclude this 
         # item when doing auto-range calculations.
         self._plt1.addItem(self.region, ignoreBounds=True)      
@@ -99,7 +97,8 @@ class mainWindow(QMainWindow):
         """
         self.file_path, _ = QtGui.QFileDialog.getOpenFileName(self, 'Open File')
         # NOTE: add an error box to saying "the audio format file most be WAV"
-        self.fs, self.data = wf.read(self.file_path)
+        self.data, self.fs = sf.read(self.file_path)
+        # self.fs, self.data = wf.read(self.file_path) # Do not load 24-bit .wavsounds
         sd.default.samplerate=self.fs
         print(self.fs)
         # plots the signal loaded
